@@ -1,0 +1,29 @@
+name: scenario-check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tsumugai-check:
+    runs-on: ubuntu-latest
+    env:
+      # tsumugai (https://github.com/kosuke-fujisawa/tsumugai) の固定バージョン。
+      # 更新する場合はこの値を新しいcommit SHAに書き換える。
+      TSUMUGAI_VERSION: eb367a5c1e13c666683db65c4a8ee323e61c8817
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: ./scripts/check-scenario.sh
+
+  textlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run textlint

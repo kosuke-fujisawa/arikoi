@@ -1,0 +1,15 @@
+{
+  "name": "arikoi",
+  "version": "0.0.0",
+  "private": true,
+  "description": "ありふれた恋のカタチ - シナリオ品質管理",
+  "scripts": {
+    "textlint": "textlint 'scenarios/**/*.md'",
+    "textlint:fix": "textlint --fix 'scenarios/**/*.md'"
+  },
+  "devDependencies": {
+    "textlint": "^15.7.1",
+    "textlint-rule-preset-ja-technical-writing": "^12.0.2",
+    "textlint-rule-preset-ja-spacing": "^3.0.2"
+  }
+}
