@@ -4,3 +4,10 @@
 
 # Node.js
 node_modules/
+
+# Ren'Py実行時生成物
+game/cache/
+game/saves/
+*.rpyc
+log.txt
+traceback.txt
