@@ -44,3 +44,29 @@ style choice_button_text is button_text:
     hover_color gui.accent_color
     size 24
     xalign 0.5
+
+
+## 終了確認などで使われる標準の確認ダイアログ（未定義だとRen'Py終了時に
+## AttributeError: 'Layout' object has no attribute 'yesno_prompt' で落ちる）。
+screen confirm(message, yes_action, no_action):
+    modal True
+
+    frame:
+        xalign 0.5
+        yalign 0.5
+        background Solid(gui.window_background_color)
+        padding (60, 40)
+
+        vbox:
+            spacing 20
+            xalign 0.5
+
+            text message color gui.text_color
+
+            hbox:
+                xalign 0.5
+                spacing 40
+
+                textbutton _("はい") action yes_action
+                if no_action is not None:
+                    textbutton _("いいえ") action no_action
