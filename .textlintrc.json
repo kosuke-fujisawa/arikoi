@@ -1,0 +1,15 @@
+{
+  "rules": {
+    "preset-ja-technical-writing": {
+      "sentence-length": { "max": 200 },
+      "max-ten": { "max": 5 },
+      "ja-no-weak-phrase": false,
+      "ja-no-mixed-period": false,
+      "no-exclamation-question-mark": false
+    },
+    "preset-ja-spacing": {
+      "ja-space-between-half-and-full-width": { "space": "always" }
+    }
+  },
+  "validateDefaultLanguage": "ja"
+}
