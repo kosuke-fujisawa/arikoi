@@ -1,0 +1,18 @@
+characters:
+  protagonist:
+    color: "#333333"
+    name:
+      en: "You"
+      ja: "あなた"
+    description:
+      en: "The player's point of view. Unnamed by design, so the reader's own quiet distance from Kaede stays theirs."
+      ja: "プレイヤー視点のキャラクター。意図的に名前を持たせず、楓との距離をプレイヤー自身のものとして感じられるようにする。"
+
+  kaede:
+    color: "#c97b8f"
+    name:
+      en: "Kaede"
+      ja: "楓"
+    description:
+      en: "A classmate the protagonist has known a long time without ever quite becoming close to. Soft-spoken, self-contained, easy to misread as distant rather than careful."
+      ja: "主人公とは長い付き合いだが、これといって親しくなったことはないクラスメイト。物静かで自足しており、\"慎重\"であることを\"よそよそしさ\"と誤解されやすい。"
