@@ -4,6 +4,7 @@ import {
   choose,
   createInitialState,
   getCurrentView,
+  validateStoryBundle,
 } from "../src/lib/story/engine";
 import { sampleStoryBundle } from "../src/lib/story/__fixtures__/sample-story-bundle";
 import type { StoryBundle } from "../src/lib/story/types";
@@ -27,6 +28,32 @@ function bundleWithScene(steps: StoryBundle["scenes"][number]["steps"]): StoryBu
 }
 
 const src = { file: "test.md", line: 1 };
+
+describe("validateStoryBundle", () => {
+  it("対応済みのschemaVersionならnullを返す", () => {
+    const bundle = bundleWithScene([
+      { kind: "narration", id: "n1", text: "hello", source: src },
+    ]);
+
+    expect(validateStoryBundle(bundle)).toBeNull();
+  });
+
+  it("未対応のschemaVersionならValidationErrorを返す(クラッシュしない)", () => {
+    const bundle: StoryBundle = {
+      ...bundleWithScene([
+        { kind: "narration", id: "n1", text: "hello", source: src },
+      ]),
+      schemaVersion: "99.0.0",
+    };
+
+    const result = validateStoryBundle(bundle);
+
+    expect(result).toEqual({
+      code: "unsupported-schema-version",
+      message: expect.stringContaining("99.0.0"),
+    });
+  });
+});
 
 describe("createInitialState", () => {
   it("エントリシーンの最初のrenderable stepを指す状態を作る", () => {
