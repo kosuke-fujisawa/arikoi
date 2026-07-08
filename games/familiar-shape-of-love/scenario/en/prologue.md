@@ -31,12 +31,18 @@ kaede: ...Never mind. Some other day, maybe.
 
 She says it lightly, like it costs her nothing. You've known her long enough to know when she's lying, and long enough to know better than to push.
 
-<!-- ending: ending_quiet_distance -->
+[Continue](#closing)
 
 ## wait
 
-You don't ask. She doesn't finish the thought. You just keep walking the long way around the shrine, the way you always do, in a silence that says almost everything except the one thing it's actually about.
+You don't ask. She doesn't finish the thought. You just keep walking, in a silence that says almost everything except the one thing it's actually about.
 
 kaede: ...Thanks. For not asking.
+
+[Continue](#closing)
+
+## closing
+
+You reach your street the way you always do, side by side, the distance between you exactly what it's always been — and exactly not.
 
 <!-- ending: ending_quiet_distance -->
