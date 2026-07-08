@@ -10,9 +10,12 @@ characters:
 
   kaede:
     color: "#c97b8f"
+    archetype:
+      en: "The Gentle Childhood Friend"
+      ja: "優しい幼馴染"
     name:
       en: "Kaede"
       ja: "楓"
     description:
-      en: "A classmate the protagonist has known a long time without ever quite becoming close to. Soft-spoken, self-contained, easy to misread as distant rather than careful."
-      ja: "主人公とは長い付き合いだが、これといって親しくなったことはないクラスメイト。物静かで自足しており、\"慎重\"であることを\"よそよそしさ\"と誤解されやすい。"
+      en: "Lives next door and has known the protagonist since before either of them can remember. Wakes him up when he oversleeps, splits her lunch with him without asking, worries out loud about things that technically aren't her business. The most natural, unguarded relationship he has — which is exactly why neither of them has ever called it anything more."
+      ja: "隣の家に住み、物心つく前から主人公を知っている幼馴染。寝坊すれば起こしにきて、頼んでもいないのに弁当を分けてくれて、放っておけばいいことにまで口を出す。主人公にとって最も自然体でいられる相手——だからこそ、二人はそれにまだ名前をつけたことがない。"
