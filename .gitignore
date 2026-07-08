@@ -4,3 +4,7 @@
 
 # Node.js
 node_modules/
+
+# Vite build出力
+dist/
+*.local
