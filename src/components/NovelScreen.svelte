@@ -7,6 +7,7 @@
   } from "../lib/story/engine";
   import type { StoryBundle } from "../lib/story/types";
   import SaveLoadPanel from "./SaveLoadPanel.svelte";
+  import DebugPanel from "./DebugPanel.svelte";
 
   let { bundle, initialState }: { bundle: StoryBundle; initialState: EngineState } =
     $props();
@@ -37,6 +38,8 @@
 </script>
 
 <svelte:window onkeydown={handleKeydown} />
+
+<DebugPanel {engineState} {bundle} />
 
 <section
   class="novel-screen"
