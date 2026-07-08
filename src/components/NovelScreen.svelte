@@ -86,6 +86,14 @@
       </ul>
     {:else if view.kind === "ending"}
       <p class="ending">-- {view.endingId} --</p>
+      <button
+        onclick={(e) => {
+          e.stopPropagation();
+          location.reload();
+        }}
+      >
+        Play again
+      </button>
     {/if}
   </section>
 {:else}
