@@ -42,13 +42,8 @@
 
 <DebugPanel {engineState} {bundle} />
 
-<section
-  class="novel-screen"
-  role="button"
-  tabindex="0"
-  onclick={handleAdvance}
-  onkeydown={handleKeydown}
->
+<!-- svelte-ignore a11y_click_events_have_key_events -- キー入力はsvelte:windowのonkeydownで処理済み。ここに重複登録するとEnter1回で2ステップ進むバグになる -->
+<section class="novel-screen" role="button" tabindex="0" onclick={handleAdvance}>
   <SaveLoadPanel
     {engineState}
     {bundle}
