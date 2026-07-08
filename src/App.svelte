@@ -1,3 +1,5 @@
-<main>
-  <p>A Familiar Shape of Love</p>
-</main>
+<script lang="ts">
+  import NovelScreen from "./components/NovelScreen.svelte";
+</script>
+
+<NovelScreen />
