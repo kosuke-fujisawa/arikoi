@@ -6,13 +6,24 @@ export type BacklogEntry = {
   text: string;
 };
 
-/**
- * 表示済みのdialogue/narrationのspeaker/textをログとして蓄積する。
- * 実装は#32で行う。
- */
-export function getBacklog(
-  _state: EngineState,
-  _bundle: StoryBundle,
-): BacklogEntry[] {
-  throw new Error("not implemented: see issue #32");
+/** 表示済みのdialogue/narrationのspeaker/textをログとして蓄積する。 */
+export function getBacklog(state: EngineState, bundle: StoryBundle): BacklogEntry[] {
+  const scene = bundle.scenes.find((s) => s.id === state.currentSceneId);
+  if (!scene) {
+    throw new Error(`scene not found: ${state.currentSceneId}`);
+  }
+
+  const entries: BacklogEntry[] = [];
+  for (const stepId of state.readStepIds) {
+    const step = scene.steps.find((s) => s.id === stepId);
+    if (!step) continue;
+
+    if (step.kind === "dialogue") {
+      entries.push({ speaker: step.speaker, text: step.text });
+    } else if (step.kind === "narration") {
+      entries.push({ text: step.text });
+    }
+  }
+
+  return entries;
 }

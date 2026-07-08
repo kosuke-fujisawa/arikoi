@@ -8,6 +8,7 @@
   import type { StoryBundle } from "../lib/story/types";
   import SaveLoadPanel from "./SaveLoadPanel.svelte";
   import DebugPanel from "./DebugPanel.svelte";
+  import BacklogPanel from "./BacklogPanel.svelte";
 
   let { bundle, initialState }: { bundle: StoryBundle; initialState: EngineState } =
     $props();
@@ -55,6 +56,7 @@
       engineState = restored;
     }}
   />
+  <BacklogPanel {engineState} {bundle} />
   {#if view.kind === "dialogue"}
     <p class="speaker">{view.speaker}</p>
     <p class="text">{view.text}</p>
