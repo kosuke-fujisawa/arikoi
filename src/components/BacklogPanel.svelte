@@ -24,6 +24,7 @@
     onkeydown={(e) => e.stopPropagation()}
     role="presentation"
   >
+    <button class="close" onclick={toggle}>Close</button>
     <ul>
       {#each entries as entry, i (i)}
         <li>
@@ -36,6 +37,11 @@
 {/if}
 
 <style>
+  .backlog-toggle {
+    position: relative;
+    z-index: 901;
+  }
+
   .backlog-panel {
     position: fixed;
     inset: 0;
