@@ -7,4 +7,9 @@ node_modules/
 
 # Vite build出力
 dist/
+.review/
 *.local
+
+# Playwright
+test-results/
+playwright-report/
