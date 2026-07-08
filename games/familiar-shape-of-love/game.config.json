@@ -1,5 +1,4 @@
 {
   "defaultLanguage": "en",
-  "supportedLanguages": ["en"],
-  "plannedLanguages": ["ja"]
+  "supportedLanguages": ["en", "ja"]
 }
