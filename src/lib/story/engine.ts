@@ -3,7 +3,26 @@ import type {
   Scene,
   Step,
   StoryBundle,
+  ValidationError,
 } from "./types";
+
+/** arikoi runtimeが読み込めるStoryBundleのschemaVersion。 */
+export const SUPPORTED_SCHEMA_VERSIONS: readonly string[] = ["0.1.0"];
+
+/**
+ * StoryBundleがこのruntimeで読み込み可能かを検証する。
+ * 致命的に非対応な場合でも例外は投げず、ValidationErrorを返す
+ * (呼び出し側でエラー表示のみ行い、クラッシュさせないため)。
+ */
+export function validateStoryBundle(bundle: StoryBundle): ValidationError | null {
+  if (!SUPPORTED_SCHEMA_VERSIONS.includes(bundle.schemaVersion)) {
+    return {
+      code: "unsupported-schema-version",
+      message: `unsupported StoryBundle schemaVersion: ${bundle.schemaVersion} (supported: ${SUPPORTED_SCHEMA_VERSIONS.join(", ")})`,
+    };
+  }
+  return null;
+}
 
 /**
  * runtimeが保持する進行状態。Svelte/DOM/storageに依存しない。
