@@ -10,10 +10,12 @@
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json && tsc -p tsconfig.test.json",
     "test": "vitest run",
+    "e2e": "playwright test",
     "textlint": "textlint 'scenarios/**/*.md'",
     "textlint:fix": "textlint --fix 'scenarios/**/*.md'"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@sveltejs/vite-plugin-svelte": "^7.1.2",
     "@tsconfig/svelte": "^5.0.8",
     "@types/node": "^24.13.2",

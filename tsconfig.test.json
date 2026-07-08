@@ -8,5 +8,5 @@
     "noEmit": true,
     "moduleDetection": "force"
   },
-  "include": ["tests/**/*.ts", "src/lib/**/*.ts"]
+  "include": ["tests/**/*.ts", "src/lib/**/*.ts", "e2e/**/*.ts", "playwright.config.ts"]
 }
