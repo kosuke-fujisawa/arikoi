@@ -9,6 +9,7 @@
   } from "../lib/story/engine";
   import type { StoryBundle } from "../lib/story/types";
   import { loadStoryBundle } from "../lib/loadStoryBundle";
+  import SaveLoadPanel from "./SaveLoadPanel.svelte";
 
   let bundle: StoryBundle | null = $state(null);
   let engineState: EngineState | null = $state(null);
@@ -64,6 +65,13 @@
     onclick={handleAdvance}
     onkeydown={handleKeydown}
   >
+    <SaveLoadPanel
+      {engineState}
+      {bundle}
+      onLoad={(restored) => {
+        engineState = restored;
+      }}
+    />
     {#if view.kind === "dialogue"}
       <p class="speaker">{view.speaker}</p>
       <p class="text">{view.text}</p>
