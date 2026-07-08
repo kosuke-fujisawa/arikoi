@@ -2,37 +2,22 @@
   import {
     advance,
     choose,
-    createInitialState,
     getCurrentView,
-    validateStoryBundle,
     type EngineState,
   } from "../lib/story/engine";
   import type { StoryBundle } from "../lib/story/types";
-  import { loadStoryBundle } from "../lib/loadStoryBundle";
   import SaveLoadPanel from "./SaveLoadPanel.svelte";
 
-  let bundle: StoryBundle | null = $state(null);
-  let engineState: EngineState | null = $state(null);
-  let error: string | null = $state(null);
+  let { bundle, initialState }: { bundle: StoryBundle; initialState: EngineState } =
+    $props();
 
-  $effect(() => {
-    loadStoryBundle("/story/story-bundle.json")
-      .then((loaded) => {
-        const validationError = validateStoryBundle(loaded);
-        if (validationError) {
-          error = validationError.message;
-          return;
-        }
-        bundle = loaded;
-        engineState = createInitialState(loaded);
-      })
-      .catch((e: unknown) => {
-        error = e instanceof Error ? e.message : String(e);
-      });
-  });
+  // initialStateは初回マウント時のスナップショットとして使う。App.svelteは
+  // Start/Continueのたびに新しいNovelScreenインスタンスを作るため、以降の
+  // propsの変化を追跡する必要はない。
+  let engineState: EngineState = $state(initialState);
+  let view = $derived(getCurrentView(engineState, bundle));
 
   function handleAdvance() {
-    if (!bundle || !engineState) return;
     const view = getCurrentView(engineState, bundle);
     if (view.kind === "dialogue" || view.kind === "narration") {
       engineState = advance(engineState, bundle);
@@ -40,7 +25,6 @@
   }
 
   function handleChoice(choiceId: string) {
-    if (!bundle || !engineState) return;
     engineState = choose(engineState, bundle, choiceId);
   }
 
@@ -54,59 +38,52 @@
 
 <svelte:window onkeydown={handleKeydown} />
 
-{#if error}
-  <p class="error">{error}</p>
-{:else if bundle && engineState}
-  {@const view = getCurrentView(engineState, bundle)}
-  <section
-    class="novel-screen"
-    role="button"
-    tabindex="0"
-    onclick={handleAdvance}
-    onkeydown={handleKeydown}
-  >
-    <SaveLoadPanel
-      {engineState}
-      {bundle}
-      onLoad={(restored) => {
-        engineState = restored;
+<section
+  class="novel-screen"
+  role="button"
+  tabindex="0"
+  onclick={handleAdvance}
+  onkeydown={handleKeydown}
+>
+  <SaveLoadPanel
+    {engineState}
+    {bundle}
+    onLoad={(restored) => {
+      engineState = restored;
+    }}
+  />
+  {#if view.kind === "dialogue"}
+    <p class="speaker">{view.speaker}</p>
+    <p class="text">{view.text}</p>
+  {:else if view.kind === "narration"}
+    <p class="text">{view.text}</p>
+  {:else if view.kind === "choice"}
+    <ul class="choices">
+      {#each view.options as option (option.id)}
+        <li>
+          <button
+            onclick={(e) => {
+              e.stopPropagation();
+              handleChoice(option.id);
+            }}
+          >
+            {option.label}
+          </button>
+        </li>
+      {/each}
+    </ul>
+  {:else if view.kind === "ending"}
+    <p class="ending">-- {view.endingId} --</p>
+    <button
+      onclick={(e) => {
+        e.stopPropagation();
+        location.reload();
       }}
-    />
-    {#if view.kind === "dialogue"}
-      <p class="speaker">{view.speaker}</p>
-      <p class="text">{view.text}</p>
-    {:else if view.kind === "narration"}
-      <p class="text">{view.text}</p>
-    {:else if view.kind === "choice"}
-      <ul class="choices">
-        {#each view.options as option (option.id)}
-          <li>
-            <button
-              onclick={(e) => {
-                e.stopPropagation();
-                handleChoice(option.id);
-              }}
-            >
-              {option.label}
-            </button>
-          </li>
-        {/each}
-      </ul>
-    {:else if view.kind === "ending"}
-      <p class="ending">-- {view.endingId} --</p>
-      <button
-        onclick={(e) => {
-          e.stopPropagation();
-          location.reload();
-        }}
-      >
-        Play again
-      </button>
-    {/if}
-  </section>
-{:else}
-  <p>Loading…</p>
-{/if}
+    >
+      Play again
+    </button>
+  {/if}
+</section>
 
 <style>
   .novel-screen {
