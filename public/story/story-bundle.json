@@ -1,26 +1,12 @@
 {
   "schemaVersion": "0.1.0",
-  "storyBuildId": "sample-fixture-001",
+  "storyBuildId": "de32afd9a099a728",
   "title": "A Familiar Shape of Love",
   "entrySceneId": "prologue",
-  "assets": [
-    {
-      "id": "bg-placeholder",
-      "kind": "background",
-      "path": "assets/bg/placeholder.png"
-    },
-    {
-      "id": "bgm-placeholder",
-      "kind": "bgm",
-      "path": "assets/music/placeholder.ogg"
-    }
-  ],
   "scenes": [
     {
       "id": "prologue",
       "title": "Prologue",
-      "background": "bg-placeholder",
-      "bgm": "bgm-placeholder",
       "source": {
         "file": "games/familiar-shape-of-love/scenario/en/prologue.md",
         "line": 1
@@ -28,7 +14,7 @@
       "steps": [
         {
           "kind": "narration",
-          "id": "opening-narration",
+          "id": "prologue#0",
           "text": "The walk home from school is the same one you've taken since you were kids — past the vending machines, over the river bridge, the long way around the shrine because Kaede insists it's luckier.",
           "source": {
             "file": "games/familiar-shape-of-love/scenario/en/prologue.md",
@@ -37,7 +23,7 @@
         },
         {
           "kind": "dialogue",
-          "id": "kaede-overslept",
+          "id": "prologue#1",
           "speaker": "kaede",
           "text": "You overslept again this morning, didn't you.",
           "source": {
@@ -47,7 +33,7 @@
         },
         {
           "kind": "dialogue",
-          "id": "protagonist-how-did-you-know",
+          "id": "prologue#2",
           "speaker": "protagonist",
           "text": "How did you even know that.",
           "source": {
@@ -57,7 +43,7 @@
         },
         {
           "kind": "dialogue",
-          "id": "kaede-your-hair",
+          "id": "prologue#3",
           "speaker": "kaede",
           "text": "Your hair. It still hasn't decided what it's doing.",
           "source": {
@@ -67,7 +53,7 @@
         },
         {
           "kind": "narration",
-          "id": "fixes-hair-narration",
+          "id": "prologue#4",
           "text": "She reaches over and fixes it without asking, the way she's done a hundred times before, like it's simply hers to fix.",
           "source": {
             "file": "games/familiar-shape-of-love/scenario/en/prologue.md",
@@ -76,7 +62,7 @@
         },
         {
           "kind": "dialogue",
-          "id": "kaede-keep-meaning-to-ask",
+          "id": "prologue#5",
           "speaker": "kaede",
           "text": "I keep meaning to ask you something.",
           "source": {
@@ -86,27 +72,27 @@
         },
         {
           "kind": "choice",
-          "id": "choice-ask-or-wait",
+          "id": "prologue#6",
           "options": [
             {
-              "id": "ask",
+              "id": "prologue#6-choice-0",
               "label": "Ask her what it is",
-              "targetStepId": "ask-protagonist-what"
+              "targetStepId": "prologue#7"
             },
             {
-              "id": "wait",
+              "id": "prologue#6-choice-1",
               "label": "Let the silence hold",
-              "targetStepId": "wait-narration"
+              "targetStepId": "prologue#11"
             }
           ],
           "source": {
             "file": "games/familiar-shape-of-love/scenario/en/prologue.md",
-            "line": 21
+            "line": 23
           }
         },
         {
           "kind": "dialogue",
-          "id": "ask-protagonist-what",
+          "id": "prologue#7",
           "speaker": "protagonist",
           "text": "What is it?",
           "source": {
@@ -116,7 +102,7 @@
         },
         {
           "kind": "dialogue",
-          "id": "ask-kaede-never-mind",
+          "id": "prologue#8",
           "speaker": "kaede",
           "text": "...Never mind. Some other day, maybe.",
           "source": {
@@ -126,7 +112,7 @@
         },
         {
           "kind": "narration",
-          "id": "ask-narration-lightly",
+          "id": "prologue#9",
           "text": "She says it lightly, like it costs her nothing. You've known her long enough to know when she's lying, and long enough to know better than to push.",
           "source": {
             "file": "games/familiar-shape-of-love/scenario/en/prologue.md",
@@ -135,8 +121,8 @@
         },
         {
           "kind": "jump",
-          "id": "ask-jump-to-closing",
-          "targetStepId": "closing-narration",
+          "id": "prologue#10",
+          "targetStepId": "prologue#14",
           "source": {
             "file": "games/familiar-shape-of-love/scenario/en/prologue.md",
             "line": 34
@@ -144,7 +130,7 @@
         },
         {
           "kind": "narration",
-          "id": "wait-narration",
+          "id": "prologue#11",
           "text": "You don't ask. She doesn't finish the thought. You just keep walking, in a silence that says almost everything except the one thing it's actually about.",
           "source": {
             "file": "games/familiar-shape-of-love/scenario/en/prologue.md",
@@ -153,7 +139,7 @@
         },
         {
           "kind": "dialogue",
-          "id": "wait-kaede-thanks",
+          "id": "prologue#12",
           "speaker": "kaede",
           "text": "...Thanks. For not asking.",
           "source": {
@@ -163,8 +149,8 @@
         },
         {
           "kind": "jump",
-          "id": "wait-jump-to-closing",
-          "targetStepId": "closing-narration",
+          "id": "prologue#13",
+          "targetStepId": "prologue#14",
           "source": {
             "file": "games/familiar-shape-of-love/scenario/en/prologue.md",
             "line": 42
@@ -172,7 +158,7 @@
         },
         {
           "kind": "narration",
-          "id": "closing-narration",
+          "id": "prologue#14",
           "text": "You reach your street the way you always do, side by side, the distance between you exactly what it's always been — and exactly not.",
           "source": {
             "file": "games/familiar-shape-of-love/scenario/en/prologue.md",
@@ -181,7 +167,7 @@
         },
         {
           "kind": "ending",
-          "id": "closing-ending",
+          "id": "prologue#15",
           "endingId": "ending_quiet_distance",
           "source": {
             "file": "games/familiar-shape-of-love/scenario/en/prologue.md",
@@ -189,6 +175,18 @@
           }
         }
       ]
+    }
+  ],
+  "assets": [
+    {
+      "id": "background-placeholder",
+      "kind": "background",
+      "path": "../../assets/bg/placeholder.png"
+    },
+    {
+      "id": "bgm-placeholder",
+      "kind": "bgm",
+      "path": "../../assets/music/placeholder.ogg"
     }
   ]
 }

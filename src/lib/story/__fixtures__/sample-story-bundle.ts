@@ -2,10 +2,12 @@ import type { StoryBundle } from "../types";
 
 /**
  * games/familiar-shape-of-love/scenario/en/prologue.md を手作業でJSON化した
- * フィクスチャ。tsumugai #128(compile --target web)が実装されるまでの間、
- * runtime開発・テストの入力として使う。
+ * フィクスチャ。runtime開発・テストの入力として使う。
  *
- * 実際のCLI出力が得られ次第、フィールド構造をつき合わせて更新すること。
+ * tsumugai compile --target web の実出力はkind/idではなくtype/stepIndex参照の
+ * 別スキーマ(scripts/compile-story.ts の RawStoryBundle 参照)なので、
+ * このフィクスチャと同じ形にはならない。実データはscripts/compile-story.tsが
+ * 変換してからruntimeに渡される。
  */
 export const sampleStoryBundle: StoryBundle = {
   schemaVersion: "0.1.0",
