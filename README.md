@@ -14,13 +14,16 @@ Svelte + Vite + TypeScriptで実装する。状態管理ライブラリは追加
 
 ```sh
 npm install
-npm run dev      # 開発サーバー起動
-npm run build    # dist/ に静的サイトを生成
-npm run preview  # ビルド済みdist/をローカルで確認
-npm run check    # svelte-check + tsc
+npm run tools:install  # tools/tsumugai.versionで固定したtsumugai CLIを導入(初回のみ)
+npm run dev             # StoryBundle再生成 + 開発サーバー起動
+npm run build           # story:check + StoryBundle再生成 + dist/ に静的サイトを生成
+npm run preview         # ビルド済みdist/をローカルで確認
+npm run check           # svelte-check + tsc
+npm run story:check     # tsumugai checkでシナリオを静的検査
+npm run story:compile   # tsumugai compileの出力をarikoi runtime形式に変換しpublic/story/story-bundle.jsonへ書き出す
 ```
 
-`public/story/` にStoryBundle JSON(tsumugai CLIの出力、#20で生成)を配置する想定。
+arikoiはtsumugaiをnpm importせず、固定バージョンのCLIをサブプロセス実行してStoryBundle JSONを生成する(`scripts/compile-story.ts`)。tsumugaiの生出力(`type`/`stepIndex`参照)はarikoi runtimeの内部形式(`kind`/`id`参照)と異なるため、compile時に変換する。
 
 ---
 
