@@ -6,12 +6,19 @@ on:
   pull_request:
 
 jobs:
-  tsumugai-check:
+  story-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
-      - run: ./scripts/check-scenario.sh
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run tools:install
+      - run: npm run story:check
+      - run: npm run story:compile
 
   textlint:
     runs-on: ubuntu-latest
