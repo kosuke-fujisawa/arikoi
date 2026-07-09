@@ -5,6 +5,7 @@
   "type": "module",
   "description": "A Familiar Shape of Love - ブラウザVN Webランタイム",
   "scripts": {
+    "tools:install": "bash scripts/install-tsumugai.sh",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",

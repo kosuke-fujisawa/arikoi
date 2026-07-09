@@ -8,10 +8,6 @@ on:
 jobs:
   tsumugai-check:
     runs-on: ubuntu-latest
-    env:
-      # tsumugai (https://github.com/kosuke-fujisawa/tsumugai) の固定バージョン。
-      # 更新する場合はこの値を新しいcommit SHAに書き換える。
-      TSUMUGAI_VERSION: eb367a5c1e13c666683db65c4a8ee323e61c8817
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
