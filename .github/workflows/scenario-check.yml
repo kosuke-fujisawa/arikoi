@@ -13,7 +13,9 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # scripts/compile-story.ts はNodeネイティブのTypeScript実行に依存する
+          # (Node 22.6+で導入。20では `ERR_UNKNOWN_FILE_EXTENSION` になる)。
+          node-version: 24
           cache: npm
       - run: npm ci
       - run: npm run tools:install
