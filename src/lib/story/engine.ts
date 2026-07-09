@@ -1,6 +1,7 @@
 import type {
   ChoiceRecord,
   Scene,
+  SourceLocation,
   Step,
   StoryBundle,
   ValidationError,
@@ -8,6 +9,48 @@ import type {
 
 /** arikoi runtimeが読み込めるStoryBundleのschemaVersion。 */
 export const SUPPORTED_SCHEMA_VERSIONS: readonly string[] = ["0.1.0"];
+
+function hasSourceLocation(source: unknown): source is SourceLocation {
+  return (
+    typeof source === "object" &&
+    source !== null &&
+    typeof (source as SourceLocation).file === "string" &&
+    typeof (source as SourceLocation).line === "number"
+  );
+}
+
+function hasValidStepShape(step: Step): boolean {
+  switch (step.kind) {
+    case "narration":
+      return typeof step.text === "string";
+    case "dialogue":
+      return typeof step.speaker === "string" && typeof step.text === "string";
+    case "choice":
+      return (
+        Array.isArray(step.options) &&
+        step.options.every(
+          (option) =>
+            typeof option.id === "string" &&
+            typeof option.label === "string" &&
+            typeof option.targetStepId === "string",
+        )
+      );
+    case "jump":
+      return typeof step.targetStepId === "string";
+    case "set_variable":
+      return typeof step.name === "string";
+    case "ending":
+      return typeof step.endingId === "string";
+    default:
+      return false;
+  }
+}
+
+function stepTargets(step: Step): string[] {
+  if (step.kind === "jump") return [step.targetStepId];
+  if (step.kind === "choice") return step.options.map((option) => option.targetStepId);
+  return [];
+}
 
 /**
  * StoryBundleがこのruntimeで読み込み可能かを検証する。
@@ -21,6 +64,60 @@ export function validateStoryBundle(bundle: StoryBundle): ValidationError | null
       message: `unsupported StoryBundle schemaVersion: ${bundle.schemaVersion} (supported: ${SUPPORTED_SCHEMA_VERSIONS.join(", ")})`,
     };
   }
+
+  if (typeof bundle.storyBuildId !== "string" || bundle.storyBuildId === "") {
+    return {
+      code: "missing-story-build-id",
+      message: "StoryBundle is missing storyBuildId",
+    };
+  }
+
+  const sceneIds = new Set<string>();
+  const stepIds = new Set<string>();
+  for (const scene of bundle.scenes) {
+    if (sceneIds.has(scene.id)) {
+      return { code: "duplicate-scene-id", message: `duplicate scene id: ${scene.id}` };
+    }
+    sceneIds.add(scene.id);
+    for (const step of scene.steps) {
+      stepIds.add(step.id);
+    }
+  }
+
+  if (!sceneIds.has(bundle.entrySceneId)) {
+    return {
+      code: "unknown-entry-scene",
+      message: `entrySceneId not found among scenes: ${bundle.entrySceneId}`,
+    };
+  }
+
+  for (const scene of bundle.scenes) {
+    for (const step of scene.steps) {
+      if (!hasSourceLocation(step.source)) {
+        return {
+          code: "missing-source-location",
+          message: `missing source location: scene=${scene.id} step=${step.id}`,
+        };
+      }
+
+      if (!hasValidStepShape(step)) {
+        return {
+          code: "invalid-step",
+          message: `invalid step structure: scene=${scene.id} step=${step.id} kind=${step.kind}`,
+        };
+      }
+
+      for (const target of stepTargets(step)) {
+        if (!stepIds.has(target)) {
+          return {
+            code: "unknown-target-step",
+            message: `unknown target step: ${target} (referenced from scene=${scene.id} step=${step.id})`,
+          };
+        }
+      }
+    }
+  }
+
   return null;
 }
 

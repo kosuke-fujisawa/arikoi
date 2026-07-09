@@ -122,7 +122,13 @@ export type ValidationErrorCode =
   | "unsupported-schema-version"
   | "story-build-mismatch"
   | "unknown-scene"
-  | "unknown-step";
+  | "unknown-step"
+  | "missing-story-build-id"
+  | "unknown-entry-scene"
+  | "duplicate-scene-id"
+  | "missing-source-location"
+  | "invalid-step"
+  | "unknown-target-step";
 
 export type ValidationError = {
   code: ValidationErrorCode;
