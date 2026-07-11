@@ -53,6 +53,92 @@ describe("validateStoryBundle", () => {
       message: expect.stringContaining("99.0.0"),
     });
   });
+
+  it("storyBuildIdが無い場合ValidationErrorを返す", () => {
+    const bundle = {
+      ...bundleWithScene([{ kind: "narration", id: "n1", text: "hello", source: src }]),
+      storyBuildId: "",
+    };
+
+    expect(validateStoryBundle(bundle)).toEqual({
+      code: "missing-story-build-id",
+      message: expect.any(String),
+    });
+  });
+
+  it("entrySceneIdに対応するsceneが無い場合ValidationErrorを返す", () => {
+    const bundle = {
+      ...bundleWithScene([{ kind: "narration", id: "n1", text: "hello", source: src }]),
+      entrySceneId: "no-such-scene",
+    };
+
+    expect(validateStoryBundle(bundle)).toEqual({
+      code: "unknown-entry-scene",
+      message: expect.stringContaining("no-such-scene"),
+    });
+  });
+
+  it("scene idが重複している場合ValidationErrorを返す", () => {
+    const bundle = bundleWithScene([{ kind: "narration", id: "n1", text: "hello", source: src }]);
+    const duplicated: StoryBundle = {
+      ...bundle,
+      scenes: [...bundle.scenes, ...bundle.scenes],
+    };
+
+    expect(validateStoryBundle(duplicated)).toEqual({
+      code: "duplicate-scene-id",
+      message: expect.stringContaining("scene-1"),
+    });
+  });
+
+  it("stepにsource locationが無い場合ValidationErrorを返す", () => {
+    const bundle = bundleWithScene([
+      { kind: "narration", id: "n1", text: "hello", source: undefined },
+    ] as unknown as StoryBundle["scenes"][number]["steps"]);
+
+    expect(validateStoryBundle(bundle)).toEqual({
+      code: "missing-source-location",
+      message: expect.stringContaining("n1"),
+    });
+  });
+
+  it("stepの構造が不正な場合(dialogueにtextが無い)ValidationErrorを返す", () => {
+    const bundle = bundleWithScene([
+      { kind: "dialogue", id: "d1", speaker: "kaede", source: src },
+    ] as unknown as StoryBundle["scenes"][number]["steps"]);
+
+    expect(validateStoryBundle(bundle)).toEqual({
+      code: "invalid-step",
+      message: expect.stringContaining("d1"),
+    });
+  });
+
+  it("jumpのtargetStepIdが存在しない場合ValidationErrorを返す", () => {
+    const bundle = bundleWithScene([
+      { kind: "jump", id: "j1", targetStepId: "no-such-step", source: src },
+    ]);
+
+    expect(validateStoryBundle(bundle)).toEqual({
+      code: "unknown-target-step",
+      message: expect.stringContaining("no-such-step"),
+    });
+  });
+
+  it("choiceのoptionのtargetStepIdが存在しない場合ValidationErrorを返す", () => {
+    const bundle = bundleWithScene([
+      {
+        kind: "choice",
+        id: "c1",
+        options: [{ id: "a", label: "A", targetStepId: "no-such-step" }],
+        source: src,
+      },
+    ]);
+
+    expect(validateStoryBundle(bundle)).toEqual({
+      code: "unknown-target-step",
+      message: expect.stringContaining("no-such-step"),
+    });
+  });
 });
 
 describe("createInitialState", () => {

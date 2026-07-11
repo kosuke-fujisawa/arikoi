@@ -2,11 +2,13 @@
   let {
     title,
     hasSave,
+    continueError = null,
     onStart,
     onContinue,
   }: {
     title: string;
     hasSave: boolean;
+    continueError?: string | null;
     onStart: () => void;
     onContinue: () => void;
   } = $props();
@@ -18,6 +20,9 @@
     <button onclick={onStart}>Start</button>
     {#if hasSave}
       <button onclick={onContinue}>Continue</button>
+    {/if}
+    {#if continueError}
+      <p class="continue-error">{continueError}</p>
     {/if}
   </div>
 </section>
@@ -36,5 +41,10 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  .continue-error {
+    color: #f66;
+    font-size: 0.9rem;
   }
 </style>
