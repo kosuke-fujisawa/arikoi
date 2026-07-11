@@ -13,3 +13,6 @@ dist/
 # Playwright
 test-results/
 playwright-report/
+
+# AIレビュー生成物
+tmp/ai-review/
