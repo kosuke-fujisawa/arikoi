@@ -126,6 +126,7 @@ export type ValidationErrorCode =
   | "missing-story-build-id"
   | "unknown-entry-scene"
   | "duplicate-scene-id"
+  | "duplicate-step-id"
   | "missing-source-location"
   | "invalid-step"
   | "unknown-target-step";

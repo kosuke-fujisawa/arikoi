@@ -91,6 +91,29 @@ describe("validateStoryBundle", () => {
     });
   });
 
+  it("step idがシーンをまたいで重複している場合ValidationErrorを返す", () => {
+    const bundle = bundleWithScene([
+      { kind: "narration", id: "shared", text: "first", source: src },
+    ]);
+    const duplicated: StoryBundle = {
+      ...bundle,
+      scenes: [
+        ...bundle.scenes,
+        {
+          id: "scene-2",
+          title: "Scene 2",
+          steps: [{ kind: "narration", id: "shared", text: "second", source: src }],
+          source: src,
+        },
+      ],
+    };
+
+    expect(validateStoryBundle(duplicated)).toEqual({
+      code: "duplicate-step-id",
+      message: expect.stringContaining("shared"),
+    });
+  });
+
   it("stepにsource locationが無い場合ValidationErrorを返す", () => {
     const bundle = bundleWithScene([
       { kind: "narration", id: "n1", text: "hello", source: undefined },
@@ -176,6 +199,41 @@ describe("createInitialState", () => {
     const state = createInitialState(bundle);
 
     expect(state.currentStepId).toBe("n2");
+  });
+
+  it("別シーンのstepへjumpできる", () => {
+    const bundle: StoryBundle = {
+      ...bundleWithScene([
+        { kind: "jump", id: "j1", targetStepId: "n2", source: src },
+      ]),
+      scenes: [
+        ...bundleWithScene([
+          { kind: "jump", id: "j1", targetStepId: "n2", source: src },
+        ]).scenes,
+        {
+          id: "scene-2",
+          title: "Scene 2",
+          steps: [{ kind: "narration", id: "n2", text: "landed", source: src }],
+          source: src,
+        },
+      ],
+    };
+
+    const state = createInitialState(bundle);
+
+    expect(state.currentSceneId).toBe("scene-2");
+    expect(state.currentStepId).toBe("n2");
+  });
+
+  it("jumpが循環する場合は現在位置を含むエラーになる", () => {
+    const bundle = bundleWithScene([
+      { kind: "jump", id: "j1", targetStepId: "j2", source: src },
+      { kind: "jump", id: "j2", targetStepId: "j1", source: src },
+    ]);
+
+    expect(() => createInitialState(bundle)).toThrow(
+      "automatic transition cycle detected: scene=scene-1 step=j1",
+    );
   });
 });
 

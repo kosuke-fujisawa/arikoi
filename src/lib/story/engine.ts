@@ -80,6 +80,9 @@ export function validateStoryBundle(bundle: StoryBundle): ValidationError | null
     }
     sceneIds.add(scene.id);
     for (const step of scene.steps) {
+      if (stepIds.has(step.id)) {
+        return { code: "duplicate-step-id", message: `duplicate step id: ${step.id}` };
+      }
       stepIds.add(step.id);
     }
   }
@@ -159,6 +162,17 @@ function findStep(scene: Scene, stepId: string): Step {
   return scene.steps[findStepIndex(scene, stepId)];
 }
 
+function findStepPosition(
+  bundle: StoryBundle,
+  stepId: string,
+): { scene: Scene; step: Step } {
+  for (const scene of bundle.scenes) {
+    const step = scene.steps.find((candidate) => candidate.id === stepId);
+    if (step) return { scene, step };
+  }
+  throw new Error(`step not found: ${stepId}`);
+}
+
 /**
  * jump / set_variable ステップは表示対象ではないため、
  * dialogue / narration / choice / ending のいずれかに着地するまで自動的に進める。
@@ -172,8 +186,16 @@ function resolveToRenderableStep(
   let scene = findScene(bundle, sceneId);
   let step = findStep(scene, stepId);
   let nextVariables = variables;
+  const visitedStepIds = new Set<string>();
 
   while (step.kind === "jump" || step.kind === "set_variable") {
+    if (visitedStepIds.has(step.id)) {
+      throw new Error(
+        `automatic transition cycle detected: scene=${scene.id} step=${step.id}`,
+      );
+    }
+    visitedStepIds.add(step.id);
+
     if (step.kind === "set_variable") {
       nextVariables = { ...nextVariables, [step.name]: step.value };
       const index = findStepIndex(scene, step.id);
@@ -183,7 +205,9 @@ function resolveToRenderableStep(
       }
       step = following;
     } else {
-      step = findStep(scene, step.targetStepId);
+      const target = findStepPosition(bundle, step.targetStepId);
+      scene = target.scene;
+      step = target.step;
     }
   }
 

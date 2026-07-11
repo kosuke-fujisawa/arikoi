@@ -25,9 +25,12 @@
     onclick={(e) => e.stopPropagation()}
     onkeydown={(e) => e.stopPropagation()}
     role="presentation"
-  >sceneId: {info.sceneId}
+  >buildId: {info.storyBuildId}
+sceneId: {info.sceneId}
 stepId: {info.stepId}
-source: {info.sourceFile}:{info.sourceLine}
+stepKind: {info.stepKind}
+source: {info.sourceFile}:{info.sourceLine}{info.sourceColumn ? `:${info.sourceColumn}` : ""}
+readStepCount: {info.readStepCount}
 variables: {JSON.stringify(info.variables)}
 choiceHistory: {JSON.stringify(info.choiceHistory)}</pre>
 {/if}

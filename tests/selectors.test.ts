@@ -10,10 +10,14 @@ describe("getDebugInfo", () => {
     const info = getDebugInfo(state, sampleStoryBundle);
 
     expect(info).toEqual({
+      storyBuildId: sampleStoryBundle.storyBuildId,
       sceneId: "prologue",
       stepId: "opening-narration",
+      stepKind: "narration",
       sourceFile: "games/familiar-shape-of-love/scenario/en/prologue.md",
       sourceLine: 9,
+      sourceColumn: undefined,
+      readStepCount: 1,
       variables: {},
       choiceHistory: [],
     });
