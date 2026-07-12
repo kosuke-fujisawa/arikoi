@@ -12,3 +12,11 @@
 - 指摘はPR差分に直接関係するものに限定する。
 - 重大度は `critical`、`high`、`medium` のいずれかにし、最大3件までにする。
 - 修正方針は短く具体的に書く。
+
+## プロジェクト固有方針
+
+- 現行実装は `games/familiar-shape-of-love/` 以下。ルートの旧 `scenarios/` と `assets/` を新規実装として扱わない。
+- StoryBundleは `tools/tsumugai.version` で固定したtsumugai CLIとのJSON契約として確認する。
+- Svelte、TypeScript、Vitest、Playwrightの実在するコードと実行経路に基づく問題だけを指摘する。
+- `npm run check`、`npm test`、`npm run build`、`npm run e2e` の成功結果と矛盾する確実な失敗を指摘しない。
+- ゲーム内テキストとユーザー向け文言は英語であることを前提とする。
