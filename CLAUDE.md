@@ -46,8 +46,14 @@ games/familiar-shape-of-love/scenario/*.md
 ```
 
 - `public/story/story-bundle.json` はMVP段階ではコミットする(生成物だが差分レビューのため)
+- tsumugai生出力→arikoi内部形式の変換契約(step id採番、schemaVersion二重管理、タイトル注入)は
+  [docs/adr/0002](docs/adr/0002-storybundle-compile-time-conversion.md) を参照
 - runtimeは読み込み時に`schemaVersion`・`storyBuildId`・scene/step構造を検証し、未対応なら起動失敗にする
   (警告で通さない)。詳細は #58 を参照
+- セーブ形式と互換ポリシー(storyBuildId完全一致・単一スロット)は
+  [docs/adr/0003](docs/adr/0003-save-data-format-and-compatibility.md)、
+  エラーハンドリング方針(境界は非throw・進行APIはthrow)は
+  [docs/adr/0004](docs/adr/0004-two-tier-error-handling.md) を参照
 - tsumugaiのバージョン固定・導入方法は #57 を参照。`main`追従インストールは禁止
 
 ## E2E(Playwright)の位置づけ
