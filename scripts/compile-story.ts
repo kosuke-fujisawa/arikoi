@@ -6,8 +6,10 @@
 // 「stepをidで指す」前提で実装済みのため、ここでコンパイル時に変換する
 // (runtime側の内部形式は変えず、tsumugai側の出力形式変化を吸収する層)。
 //
+// 変換契約の背景は docs/adr/0002-storybundle-compile-time-conversion.md を参照。
+//
 // 使い方:
-//   node scripts/compile-story.ts <entry.md> <output.json>
+//   node scripts/compile-story.ts <entry.md> <output.json> [gameTitle]
 import { execFileSync } from "node:child_process";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";

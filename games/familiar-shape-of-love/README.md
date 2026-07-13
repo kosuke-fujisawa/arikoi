@@ -10,7 +10,8 @@
 games/familiar-shape-of-love/
   game.config.json    — defaultLanguage/supportedLanguages
   characters.yaml      — キャラクター定義(ID言語非依存、表示名・説明はen/ja)
-  scenario/en/          — 英語版シナリオ(tsumugai記法、日本語版は#18で追加)
+  scenario/en/          — 英語版シナリオ(tsumugai記法、現行の実装対象)
+  scenario/ja/          — 日本語版シナリオ(将来用、現時点では優先度低)
   assets/{bg,music,se}/ — 英語版で使用するフリー素材
 ```
 
