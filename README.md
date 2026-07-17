@@ -21,6 +21,7 @@ npm run preview         # ビルド済みdist/をローカルで確認
 npm run check           # svelte-check + tsc
 npm run story:check     # tsumugai checkでシナリオを静的検査
 npm run story:compile   # tsumugai compileの出力をarikoi runtime形式に変換しpublic/story/story-bundle.jsonへ書き出す
+npm run release:zip     # itch.io向け配布zipを生成(手順: docs/production/release-itch-io.md)
 ```
 
 arikoiはtsumugaiをnpm importせず、固定バージョンのCLIをサブプロセス実行してStoryBundle JSONを生成する(`scripts/compile-story.ts`)。tsumugaiの生出力(`type`/`stepIndex`参照)はarikoi runtimeの内部形式(`kind`/`id`参照)と異なるため、compile時に変換する。

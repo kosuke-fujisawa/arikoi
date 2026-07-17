@@ -7,6 +7,9 @@ node_modules/
 
 # Vite build出力
 dist/
+
+# itch.io向けリリースzip(npm run release:zipの生成物)
+a-familiar-shape-of-love-web.zip
 .review/
 *.local
 
