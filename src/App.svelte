@@ -29,7 +29,7 @@
   let continueError: string | null = $state(null);
 
   $effect(() => {
-    loadStoryBundle("/story/story-bundle.json")
+    loadStoryBundle(`${import.meta.env.BASE_URL}story/story-bundle.json`)
       .then((loaded) => {
         const validationError = validateStoryBundle(loaded);
         if (validationError) {

@@ -16,6 +16,7 @@
     "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json && tsc -p tsconfig.test.json",
     "test": "vitest run",
     "e2e": "playwright test",
+    "release:zip": "npm run build && rm -f a-familiar-shape-of-love-web.zip && cd dist && zip -rX ../a-familiar-shape-of-love-web.zip . -x '._*' '*/._*' '.DS_Store' '*/.DS_Store'",
     "textlint": "textlint 'scenarios/**/*.md'",
     "textlint:fix": "textlint --fix 'scenarios/**/*.md'"
   },
