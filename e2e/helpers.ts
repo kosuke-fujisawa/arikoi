@@ -23,6 +23,12 @@ export function glink(page: Page, hasText: string) {
   return page.locator(".glink_button", { hasText }).first();
 }
 
+/** タイトル画面を開いて指定ボタンの表示を待つ(初回はエンジン起動があるため長めに待つ) */
+export async function openTitle(page: Page, buttonText = "Start") {
+  await page.goto("/");
+  await expect(glink(page, buttonText)).toBeVisible({ timeout: 30_000 });
+}
+
 /**
  * 文字送りアニメーションの完了を待つ。
  * 文字送り中(is_adding_text=true)にセーブするとそのフラグごと保存され、

@@ -1,11 +1,10 @@
 import { expect, test } from "@playwright/test";
-import { advanceUntil, advanceUntilVisible, glink, waitForTextSettled } from "./helpers";
+import { advanceUntil, advanceUntilVisible, glink, openTitle, waitForTextSettled } from "./helpers";
 
 test("save -> reload -> continue -> load -> reach ending", async ({ page }) => {
   test.setTimeout(120_000);
 
-  await page.goto("/");
-  await expect(glink(page, "Start")).toBeVisible({ timeout: 15_000 });
+  await openTitle(page);
   await glink(page, "Start").click();
 
   // 選択肢まで進めてask分岐に入る
@@ -25,7 +24,7 @@ test("save -> reload -> continue -> load -> reach ending", async ({ page }) => {
 
   // ページを開き直してContinue → ロード
   await page.reload();
-  await expect(glink(page, "Continue")).toBeVisible({ timeout: 15_000 });
+  await expect(glink(page, "Continue")).toBeVisible({ timeout: 30_000 });
   await glink(page, "Continue").click();
   const loadSlot = page.locator('.save_list_item[data-num="0"]');
   await expect(loadSlot).toBeVisible({ timeout: 10_000 });

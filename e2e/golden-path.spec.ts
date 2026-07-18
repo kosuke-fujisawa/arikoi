@@ -1,13 +1,11 @@
 import { expect, test } from "@playwright/test";
-import { advanceUntil, advanceUntilVisible, glink } from "./helpers";
+import { advanceUntil, advanceUntilVisible, glink, openTitle } from "./helpers";
 
 test("start -> advance -> choose -> ending -> back to title", async ({ page }) => {
   test.setTimeout(90_000);
 
-  await page.goto("/");
-
   // タイトル画面
-  await expect(glink(page, "Start")).toBeVisible({ timeout: 15_000 });
+  await openTitle(page);
   await glink(page, "Start").click();
 
   // プロローグ冒頭
@@ -32,8 +30,7 @@ test("start -> advance -> choose -> ending -> back to title", async ({ page }) =
 test("wait branch also reaches the ending", async ({ page }) => {
   test.setTimeout(90_000);
 
-  await page.goto("/");
-  await expect(glink(page, "Start")).toBeVisible({ timeout: 15_000 });
+  await openTitle(page);
   await glink(page, "Start").click();
 
   await advanceUntilVisible(page, "I keep meaning to ask you something");

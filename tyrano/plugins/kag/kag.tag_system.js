@@ -1702,7 +1702,9 @@ tyrano.plugin.kag.tag.commit = {
                 var name = $(this).attr("name");
                 var val = $(this).val();
 
-                var str = name + " = '" + val + "'";
+                // [arikoi security patch] 引用符を含む入力でevalScriptの代入式を
+                // 脱出できないよう、値をJSONリテラル化する(エンジン更新時は再適用すること)
+                var str = name + " = " + JSON.stringify(String(val));
 
                 that.kag.evalScript(str);
 
@@ -2035,7 +2037,8 @@ tyrano.plugin.kag.tag.dialog = {
                 if (flag) {
                     var name = pm.name;
                     var val = text;
-                    var str = name + " = '" + val + "'";
+                    // [arikoi security patch] ダイアログ入力も同様にJSONリテラル化する
+                    var str = name + " = " + JSON.stringify(String(val));
 
                     that.kag.evalScript(str);
                 } else {

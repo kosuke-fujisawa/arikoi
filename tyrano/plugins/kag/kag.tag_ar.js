@@ -261,7 +261,9 @@ tyrano.plugin.kag.tag.bgcamera = {
                 alert(url);
             }
 
-            if (url.indexOf("http") != -1) {
+            // [arikoi security patch] "javascript:...http..."等がlocation.hrefへ渡らないよう
+            // スキームをhttp/httpsに限定する(エンジン更新時は再適用すること)
+            if (/^https?:\/\//i.test(url)) {
                 //webの場合かつ、QRコードが反応するようになってたら
                 if (mode == "all" || mode == "define" || mode == "web") {
                     //defineが存在したらジャンプに切り替える
