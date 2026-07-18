@@ -1,72 +1,53 @@
 # arikoi (A Familiar Shape of Love) — リポジトリ固有ガイドライン
 
 グローバル共通ガイドライン(`~/.claude/CLAUDE.md`)の方針をベースにしつつ、本リポジトリでは以下が優先する。
+開発原則の正本は [AGENTS.md](AGENTS.md)(ティラノ標準機能優先・独自実装禁止・`.ks`正本・汎用化しない)。
 
 ## プロダクトの性質
 
-英語圏itch.io向けブラウザVN「A Familiar Shape of Love」。方針転換の背景は
-[docs/adr/0001-renpy-to-browser-vn-pivot.md](docs/adr/0001-renpy-to-browser-vn-pivot.md) を参照。
-
-本体は [games/familiar-shape-of-love/](games/familiar-shape-of-love/) 以下。リポジトリルートの
-`scenarios/`・`assets/` は転換前(日本語版MVP)の参考資料であり、新規実装では使用しない。
+英語圏itch.io向けの短編ブラウザビジュアルノベル「A Familiar Shape of Love」。
+**ティラノスクリプト作品リポジトリ**であり、エンジン・ランタイム・DSLは実装しない。
+経緯は [docs/adr/0001](docs/adr/0001-renpy-to-browser-vn-pivot.md)(ブラウザVN転換)と
+[docs/adr/0005](docs/adr/0005-tsumugai-to-tyranoscript.md)(ティラノ移行)を参照。
 
 ## 言語方針(共通ガイドラインからの上書き)
 
-- 開発会話・コミットメッセージ・issue/PR: 共通ガイドラインどおり日本語
-- **ユーザー向け成果物は英語を優先する**: README、ストア文言、ゲーム内テキスト(シナリオ・UI文言)、
-  ゲーム内エラーメッセージはすべて英語で書く
-- `games/familiar-shape-of-love/scenario/en/` が現行の実装対象。`scenario/ja/` は将来の日本語版用で、
-  現時点では優先度が低い
+- 開発会話・コミットメッセージ・issue/PR・docs: 日本語
+- **ユーザー向け成果物は英語**: ゲーム内テキスト(シナリオ・UI文言)、ストア文言、ゲーム内エラーメッセージ
 
 ## 技術スタック
 
-- Svelte + Vite + TypeScript(状態管理ライブラリは追加せず、標準のSvelte store/moduleで実装)
-- テスト: Vitest(単体) + Playwright(E2E)
-- シナリオ記述: tsumugai(別リポジトリ、Rust製CLI)のDSL
+- 実行基盤: ティラノスクリプト v514(`tyrano/` をリポジトリに同梱、原則無改造。例外は `lang.js` の英語化のみ)
+- シナリオ: `data/scenario/*.ks` が**正本**(ティラノスクリプト記法、英語)。中間DSL・Markdown正本は作らない
+- ビルド工程なし。リポジトリルートをHTTP配信すればそのまま動く
+- テスト: Playwright E2E(`e2e/`)のみ。単体テスト対象となる独自ロジックは持たない
 
 ```sh
-npm install
-npm run dev      # 開発サーバー起動
-npm run build    # dist/ に静的サイトを生成
-npm run preview  # ビルド済みdist/をローカルで確認
-npm run check    # svelte-check + tsc
-npm run test     # vitest run
-npm run e2e      # playwright test
+npm install          # 初回のみ
+npm run serve        # http://localhost:4173 でゲーム起動
+npm run e2e          # Playwright E2E
+npm run release:zip  # itch.io向け配布zip生成
 ```
 
-## StoryBundleの依存関係
+## ティラノスクリプトの注意点
 
-arikoiはtsumugaiをnpmライブラリとしてimportしない。連携はCLIサブプロセス + JSONファイルで疎結合する。
-
-```
-games/familiar-shape-of-love/scenario/*.md
-  -> 固定バージョンのtsumugai CLI (tools/tsumugai.version で固定)
-  -> public/story/story-bundle.json
-  -> arikoi runtime (src/lib/story/)
-```
-
-- `public/story/story-bundle.json` はMVP段階ではコミットする(生成物だが差分レビューのため)
-- tsumugai生出力→arikoi内部形式の変換契約(step id採番、schemaVersion二重管理、タイトル注入)は
-  [docs/adr/0002](docs/adr/0002-storybundle-compile-time-conversion.md) を参照
-- runtimeは読み込み時に`schemaVersion`・`storyBuildId`・scene/step構造を検証し、未対応なら起動失敗にする
-  (警告で通さない)。詳細は #58 を参照
-- セーブ形式と互換ポリシー(storyBuildId完全一致・単一スロット)は
-  [docs/adr/0003](docs/adr/0003-save-data-format-and-compatibility.md)、
-  エラーハンドリング方針(境界は非throw・進行APIはthrow)は
-  [docs/adr/0004](docs/adr/0004-two-tier-error-handling.md) を参照
-- tsumugaiのバージョン固定・導入方法は #57 を参照。`main`追従インストールは禁止
+- タグ属性値内の半角スペースはパーサに除去される → `&nbsp;` で表現する
+- `#名前` 行を使うには `[chara_config ptext=...]` で名前表示領域の宣言が必要
+- 文字送り中(`is_adding_text=true`)のセーブはロード後にクリック受付が壊れる(エンジン仕様)。
+  E2Eではセーブ前に `waitForTextSettled`(`e2e/helpers.ts`)を挟む
+- エンジン更新時: v5タグzipを展開し、`.github/`・`package.json`(NW.js用)・`release/`・`doc.html` を
+  除外して上書き後、`lang.js` の英語化差分を再適用する
 
 ## E2E(Playwright)の位置づけ
 
-`e2e/`配下のPlaywrightテストは、start→advance→choose→save→reload→load→continue→endingの
-ゴールデンパスを実機ブラウザで確認する。Vitestの単体テストでは検証できない
-「実際にビルドしたページで一連の操作が通るか」を担保する役割。UI変更時は型チェック・vitestだけでなく
-このE2Eもグリーンであることを確認する。
+`e2e/` のテストは「タイトル→Start→テキスト送り→選択肢(両分岐)→エンディング→タイトル復帰」と
+「セーブ→リロード→Continue→ロード→続行」を実機ブラウザで担保する。
+シナリオ・UI変更時は必ずE2Eを実行する。
 
 ## Definition of Done(本リポジトリでの追加基準)
 
 共通の`quality-gate`スキルの基準に加え、以下も満たすこと:
 
-- `npm run check` / `npm run test` / `npm run e2e` がグリーン
-- UI変更時はブラウザ実機での動作確認を行う(型チェック・vitestのみでの完了報告はしない。
-  過去に型チェック通過でも実機で壊れていた事例があるため)
+- `npm run e2e` がグリーン
+- `npm run serve` でのブラウザ実機確認(型チェックが無い構成のため実機確認の比重が高い。
+  過去に自動チェック通過でも実機で壊れていた事例があるため)

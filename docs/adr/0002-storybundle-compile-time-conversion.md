@@ -3,6 +3,8 @@
 - 日付: 2026-07-12
 - 状態: 採用(実装済みの判断の事後記録)
 
+> **失効(2026-07-19)**: [ADR 0005](0005-tsumugai-to-tyranoscript.md) のティラノスクリプト移行に伴い、本ADRが前提とする独自ランタイム/StoryBundleは廃止された。歴史的記録として保存する。
+
 ## 背景
 
 ADR 0001でtsumugaiとの連携を「CLIサブプロセス + StoryBundle JSON」の疎結合とした。しかし`tsumugai compile --target web`の生出力とarikoi runtimeの内部契約には構造差がある。
