@@ -1,21 +1,21 @@
 window.tyrano_lang = {
     word: {
-        go_title: "タイトルに戻ります。よろしいですね？",
-        exit_game: "ウィンドウを閉じて終了します。よろしいですね？",
-        not_saved: "まだ、保存されているデータがありません",
-        tag: "タグ",
-        not_exists: "は存在しません",
-        error: "エラーが発生しました。スクリプトを確認して下さい",
-        label: "ラベル",
-        label_double: "は同一シナリオファイル内に重複しています",
-        error_occurred: "エラーが発生しました",
+        go_title: "Return to the title screen?",
+        exit_game: "Close the window and quit the game?",
+        not_saved: "No saved data yet.",
+        tag: "Tag",
+        not_exists: " does not exist",
+        error: "An error occurred. Please check the script.",
+        label: "Label",
+        label_double: " is duplicated in the same scenario file",
+        error_occurred: "An error occurred",
         save_file_violation_1:
-            "セーブデータの移動を検知しました。信頼できるセーブデータでない場合、絶対に読み込まないでください。",
+            "Save data transfer detected. Never load save data from an untrusted source.",
         save_file_violation_2:
-            "セーブデータを読み込んでゲームを起動してもよろしいですか？",
+            "Load this save data and start the game?",
         save_file_violation_3:
-            "起動を中止しました。セーブデータを削除してもう一度、起動してください",
-        reload: "リロード",
+            "Startup aborted. Please delete the save data and start again.",
+        reload: "Reload",
     },
 
     novel: {
