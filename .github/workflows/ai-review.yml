@@ -15,7 +15,9 @@ concurrency:
 
 jobs:
   review:
-    if: ${{ !github.event.pull_request.draft && github.event.pull_request.head.repo.full_name == github.repository }}
+    # skip-ai-reviewラベル: エンジン同梱PRなど巨大diffでai-review-actionが
+    # 入力収集(git diffのバッファ超過)で落ちるケースをスキップするための退避
+    if: ${{ !github.event.pull_request.draft && github.event.pull_request.head.repo.full_name == github.repository && !contains(github.event.pull_request.labels.*.name, 'skip-ai-review') }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
