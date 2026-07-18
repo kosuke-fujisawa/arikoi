@@ -5,17 +5,13 @@
 # Node.js
 node_modules/
 
-# Vite build出力
-dist/
-
-# itch.io向けリリースzip(npm run release:zipの生成物)
-a-familiar-shape-of-love-web.zip
+# レビュー生成物
 .review/
-*.local
+tmp/ai-review/
 
 # Playwright
 test-results/
 playwright-report/
 
-# AIレビュー生成物
-tmp/ai-review/
+# itch.io向けリリースzip(npm run release:zipの生成物)
+a-familiar-shape-of-love-web.zip
