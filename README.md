@@ -1,6 +1,6 @@
 # A Familiar Shape of Love (ありふれた恋のカタチ)
 
-**arikoiはティラノスクリプト作品です。** 英語圏itch.io向けの短編ブラウザビジュアルノベルで、
+**arikoiはティラノスクリプト作品です。** 英語圏itch.io向けのブラウザビジュアルノベルで、
 実行基盤には[ティラノスクリプト](https://tyrano.jp/)(v514同梱)を利用します。
 独自のノベルゲームランタイム・独自DSLは持ちません。
 
@@ -49,7 +49,7 @@ e2e/            Playwright E2E
 |---|---|
 | 設計判断の記録(ADR) | [docs/adr/](docs/adr/) |
 | コンセプト(英語版、現行) | [docs/en/concept.md](docs/en/concept.md) |
-| 登場キャラクター(現行) | [docs/characters/protagonists.md](docs/characters/protagonists.md) |
+| 登場キャラクター(現行) | [docs/characters/cast.md](docs/characters/cast.md) |
 | itch.ioリリース手順 | [docs/production/release-itch-io.md](docs/production/release-itch-io.md) |
 | コンセプト(転換前・参考) | [docs/concept.md](docs/concept.md) |
 | テーマ・作品の本質 | [docs/theme.md](docs/theme.md) |
