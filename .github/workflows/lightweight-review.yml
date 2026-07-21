@@ -28,6 +28,8 @@ jobs:
 
       - run: npm ci
 
+      - run: npx playwright install --with-deps chromium
+
       - name: Run lightweight review checks
         id: review
         shell: bash
